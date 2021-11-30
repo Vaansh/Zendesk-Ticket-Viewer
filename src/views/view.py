@@ -21,3 +21,5 @@ class View:
 
         for menu_option in self.menu_options:
             print(str(menu_option), self.menu_options[menu_option], sep=": ")
+
+    # def render_table():
