@@ -13,18 +13,18 @@ class Requestor:
         self.password = password
         self.subdomain = subdomain
 
-    def make_request(self, id: int = -inf, page: int = 1, multiple_tickets: bool = False) -> Union[Ticket, List[Ticket]]:
+    def request(self, id: int = -inf, page: int = 1, multiple_tickets: bool = False) -> Union[Ticket, List[Ticket]]:
         if not multiple_tickets:
             url = f"https://{self.subdomain}.zendesk.com/api/v2/tickets/{str(id)}.json"
         else:
             url = f"https://{self.subdomain}.zendesk.com/api/v2/tickets.json?per_page={self.PAGINATION}&page={page}"
 
-        response = requests.get(url, auth=(self.username, self.password))
-
         try:
-            response.raise_for_status()
-        except (requests.exceptions.RequestException, requests.exceptions.HTTPError, requests.exceptions.ConnectionError):
-            raise
+            response = requests.get(url, auth=(self.username, self.password))
+        except ConnectionError:
+            return "FATAL: There was a connection issue."
+        except TimeoutError:
+            return "FATAL: Could not fetch data."
 
         if id == -inf:
             return
