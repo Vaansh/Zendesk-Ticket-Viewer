@@ -19,16 +19,15 @@ class Requestor:
         else:
             url = f"https://{self.subdomain}.zendesk.com/api/v2/tickets.json?per_page={self.PAGINATION}&page={page}"
 
-        try:
-            response = requests.get(url, auth=(self.username, self.password))
-        except ConnectionError:
-            return "FATAL: There was a connection issue."
-        except TimeoutError:
-            return "FATAL: Could not fetch data."
+        response = requests.get(url, auth=(self.username, self.password))
 
+        if response.ok:
+            self.handle_return_data()
+        else:
+            return None
+
+    def handle_return_data(id: int):
         if id == -inf:
             return
         else:
             return
-
-    # def error_handler():
