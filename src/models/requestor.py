@@ -1,19 +1,24 @@
 import requests
 
-from ticket import Ticket
+from numpy import inf
+from models.ticket import Ticket
 from typing import List, Union
 
 
 class Requestor:
     PAGINATION = 25
 
-    def __init__(self, credentials: List[str]):
-        self.username = credentials["username"]
-        self.password = credentials["password"]
-        self.subdomain = credentials["subdomain"]
+    def __init__(self, username: str, password: str, subdomain: str):
+        self.username = username
+        self.password = password
+        self.subdomain = subdomain
 
-    def make_request(id: int = -inf, page: int = 1, multiple_tickets: bool = False) -> Union[Ticket, List[Ticket]]:
-        url = f"https://{self.domain}.zendesk.com/api/v2/tickets/{id}.json" if multiple_tickets else f"https://{self.domain}.zendesk.com/api/v2/tickets.json?per_page={self.PAGINATION}&page={page}"
+    def make_request(self, id: int = -inf, page: int = 1, multiple_tickets: bool = False) -> Union[Ticket, List[Ticket]]:
+        if not multiple_tickets:
+            url = f"https://{self.subdomain}.zendesk.com/api/v2/tickets/{str(id)}.json"
+        else:
+            url = f"https://{self.subdomain}.zendesk.com/api/v2/tickets.json?per_page={self.PAGINATION}&page={page}"
+
         response = requests.get(url, auth=(self.username, self.password))
 
         try:

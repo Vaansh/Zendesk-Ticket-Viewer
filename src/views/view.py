@@ -6,8 +6,8 @@ class View:
     def __init__(self):
         self.display_message = "Please Enter a Number from the Menu:"
         self.menu_options = {
-            1: 'Option 1',
-            2: 'Option 2',
+            1: 'View all tickets',
+            2: 'View a ticket',
             3: 'Exit',
         }
 

@@ -1,4 +1,4 @@
-import helpers
+import lib.helpers as helpers
 from views.view import View
 from models.requestor import Requestor
 
@@ -6,18 +6,21 @@ from models.requestor import Requestor
 class Controller:
     def __init__(self):
         self.view = View()
+        self.credentials = helpers.get_credentials(
+            "credentials/credentials.json")
         self.requestor = Requestor(
-            helpers.get_credentials("credentials/credentials.json"))
-        self.selected_option = ""
+            self.credentials["username"], self.credentials["password"], self.credentials["subdomain"])
 
     def start_application(self) -> None:
         self.render_header()
 
-        while self.selected_option != "3":
+        selected_option = ""
+        while selected_option != "3":
             self.render_menu()
-            self.selected_option = input()
+            selected_option = input()
 
-            # if selected_option == "1":
+            if selected_option == "1":
+                print(self.requestor.make_request())
 
             # if selected_option == "2":
 
