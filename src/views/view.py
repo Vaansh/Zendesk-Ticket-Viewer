@@ -38,6 +38,11 @@ class View:
             print(str(ticket_option),
                   self.ticket_options[ticket_option], sep=": ")
 
+    def render_tickets_submenu(self) -> None:
+        for tickets_option in self.tickets_options:
+            print(str(tickets_option),
+                  self.tickets_options[tickets_option], sep=": ")
+
     def render_exit_screen(self) -> None:
         print("Thank you for using this application.")
 

@@ -11,65 +11,75 @@ class Controller:
         self.credentials = helpers.get_credentials(
             "credentials/credentials.json")
         self.requestor = Requestor(
-            self.credentials["username"], self.credentials["password"], self.credentials["subdomain"])
+            self.credentials["username"],
+            self.credentials["password"],
+            self.credentials["subdomain"])
 
     def start_application(self) -> None:
         self.render_header()
 
         selected_option = ""
-        application_exit = False
 
         while selected_option != "3":
             self.render_menu()
             selected_option = input()
 
-            if application_exit:
-                self.exit_application()
-
             if selected_option == "1":
-                self.render_ticket_submenu()
-                selected_ticket_option = ""
-
-                while selected_ticket_option != "3":
-                    selected_ticket_option = input()
-
-                    if selected_ticket_option == "1":
-                        # TODO: user input for ticket
-                        print(self.requestor.request())
-                        return
-                    elif selected_ticket_option == "2":
-                        continue
-                    elif selected_ticket_option == "3":
-                        application_exit = True
-                    else:
-                        self.render_incorrect_input()
+                self.handle_tickets_request()
 
             elif selected_option == "2":
-                # TODO: code to render multiple tickets + flip through pages
-                self.render_tickets_submenu()
-                selected_tickets_option = ""
-
-                while selected_tickets_option != "4":
-                    selected_tickets_option = input()
-
-                    if selected_tickets_option == "1":
-                        # TODO: user input for tickets [prev page]
-                        print(self.requestor.request())
-                        return
-                    elif selected_tickets_option == "2":
-                        # TODO: user input for tickets [next page]
-                        return
-                    elif selected_tickets_option == "3":
-                        continue
-                    elif selected_tickets_option == "4":
-                        application_exit = True
-                    else:
-                        self.render_incorrect_input()
+                self.handle_ticket_request()
 
             else:
                 self.render_incorrect_input()
 
         self.exit_application()
+
+    # TODO: code to render multiple tickets + flip through pages
+
+    def handle_ticket_request(self) -> None:
+        selected_ticket_option = ""
+
+        while selected_ticket_option != "3":
+            self.render_ticket_submenu()
+            selected_ticket_option = input()
+
+            if selected_ticket_option == "1":
+                # TODO: user input for ticket
+                print(self.requestor.request())
+
+            elif selected_ticket_option == "2":
+                break
+
+            elif selected_ticket_option == "3":
+                self.exit_application()
+
+            else:
+                self.render_incorrect_input()
+
+    def handle_tickets_request(self) -> None:
+        selected_tickets_option = ""
+
+        while selected_tickets_option != "4":
+            self.render_tickets_submenu()
+            selected_tickets_option = input()
+
+            if selected_tickets_option == "1":
+                # TODO: user input for tickets [prev page]
+                print(self.requestor.request())
+
+            elif selected_tickets_option == "2":
+                # TODO: user input for tickets [next page]
+                print(self.requestor.request())
+
+            elif selected_tickets_option == "3":
+                break
+
+            elif selected_tickets_option == "4":
+                self.exit_application()
+
+            else:
+                self.render_incorrect_input()
 
     def render_header(self) -> None:
         self.view.render_header()
@@ -79,6 +89,9 @@ class Controller:
 
     def render_ticket_submenu(self) -> None:
         self.view.render_ticket_submenu()
+
+    def render_tickets_submenu(self) -> None:
+        self.view.render_tickets_submenu()
 
     def render_exit_screen(self) -> None:
         self.view.render_exit_screen()
