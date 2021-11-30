@@ -1,14 +1,16 @@
 import os
+import json
 from typing import List
 
 
-def get_credentials(path: str) -> List[str]:
+def get_credentials(path: str) -> dict:
     file = open(path)
     data = json.load(file)
-    user, password, subdomain, api_token = data["username"], data[
-        "password"], data["subdomain"], data["api_token"]
+    credentials = {}
+    credentials["username"], credentials["password"], credentials["subdomain"], credentials[
+        "api_token"] = data["username"], data["password"], data["subdomain"], data["api_token"]
     file.close()
-    return [user, password, subdomain, api_token]
+    return credentials
 
 
 def get_string_from_text_file(path: str) -> str:
