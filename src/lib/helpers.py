@@ -2,7 +2,8 @@ import os
 import json
 
 from typing import List
-from prettytable import prettytable
+from models.ticket import Ticket
+from prettytable import PrettyTable
 
 
 def get_credentials(path: str) -> dict:
@@ -25,16 +26,25 @@ def render(string_to_render: str, align_to_center: bool = False) -> None:
           if align_to_center else string_to_render)
 
 
-def render_ticket(json_list: List[str]) -> None:
-    table = PrettyTable("Requested Ticket:")
+def render_table(tickets: List[Ticket]) -> None:
+    table = PrettyTable([
+        "id",
+        "subject",
+        "status",
+        "created_at"
+    ])
 
-    for json in json_list:
-        table.add_row(
-            json["id"],
-            json["subject"],
-            json["status"],
-            json["created_at"],
-            json["description"]
-        )
+    table.hrules = 1
+    table.vrules = 1
+    table.header = True
 
-    self.render(table)
+    for ticket in tickets:
+        table.add_row([
+            ticket.id,
+            ticket.subject,
+            ticket.status,
+            ticket.created_at,
+        ])
+
+    render(table)
+    render("\n")

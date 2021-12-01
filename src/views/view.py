@@ -51,13 +51,13 @@ class View:
                   self.tickets_options[tickets_option], sep=": ")
 
     def render_exit_screen(self) -> None:
-        helpers.render("Thank you for using this application.")
+        helpers.render("Thank you for using this application.\n")
 
     def render_incorrect_input(self) -> None:
         helpers.render(
-            "Your input was not recognized. Please ensure you enter the option presented correctly.")
+            "Your input was not recognized. Please ensure you enter the option presented correctly.\n")
 
     def render_incorrect_id(self) -> None:
-        helpers.render("Invalid Id.")
+        helpers.render("Invalid Id.\n")
 
     # def render_table():

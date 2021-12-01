@@ -40,9 +40,10 @@ class Controller:
 
     def handle_ticket_request(self) -> None:
         selected_ticket_option = ""
-
         self.render_ticket_prompt_input()
+
         selected_ticket_option = self.receive_input()
+
         self.request(selected_ticket_option)
         self.handle_subticket_request()
 
@@ -84,6 +85,7 @@ class Controller:
         ticket = self.requestor.request(ticket_id)
         if ticket:
             print(ticket)
+            helpers.render_table([ticket])
         else:
             self.render_incorrect_id()
 
