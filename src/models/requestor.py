@@ -1,8 +1,9 @@
-import requests
+from typing import Any, List, Union
 
+import requests
 from numpy import inf
+
 from models.ticket import Ticket
-from typing import List, Union, Any
 
 
 class Requestor:

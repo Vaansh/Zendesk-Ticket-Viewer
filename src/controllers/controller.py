@@ -1,9 +1,10 @@
 import sys
+from typing import Any, List
+
 import lib.helpers as helpers
-from views.view import View
 from models.requestor import Requestor
 from models.ticket import Ticket
-from typing import Any, List
+from views.view import View
 
 
 class Controller:
@@ -32,8 +33,6 @@ class Controller:
 
         self.exit_application()
 
-    # TODO: code to render multiple tickets + flip through pages
-
     def handle_ticket_request(self) -> None:
         selected_ticket_option = ""
         self.render_ticket_prompt_input()
@@ -60,7 +59,7 @@ class Controller:
                 self.request(multiple_tickets=True, page_number=page_number, page_count=page_count)
             elif selected_tickets_option == "2":
                 page_number += 1
-                if page_number >= page_count:
+                if page_number > page_count:
                     self.render_over_or_undershot_page()
                     page_number = page_count
                 self.request(multiple_tickets=True, page_number=page_number, page_count=page_count)

@@ -1,7 +1,7 @@
-import lib.helpers as helpers
-import lib.ascii as render
-
 from typing import List
+
+import lib.ascii as render
+import lib.helpers as helpers
 from models.ticket import Ticket
 
 
