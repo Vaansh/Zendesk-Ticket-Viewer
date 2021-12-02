@@ -35,15 +35,7 @@ class Requestor:
                     return int(counts) + 1
             return self.handle_return_data(response, ticket_id)
         else:
-            if count:
-                return -1
-            status = response.status_code
-            if status >= 500:
-                return "err_api_unavailable"
-            elif status >= 400:
-                return "err_bad_request"
-            else:
-                return None
+            return self.handle_errors(count, response)
 
     def handle_return_data(self, response: Any, ticket_id: int = -inf) -> Union[List[Ticket]]:
         ticket = response.json()["ticket"]
@@ -53,7 +45,7 @@ class Requestor:
         else:
             return [Ticket(ticket)]
 
-    def handle_errors(count: bool, response: Any) -> Union[str, int, None]:
+    def handle_errors(self, count: bool, response: Any) -> Union[str, int, None]:
         if count:
             return -1
         status = response.status_code
