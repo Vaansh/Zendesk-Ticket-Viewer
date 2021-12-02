@@ -30,7 +30,7 @@ def render(string_to_render: str, align_to_center: bool = False) -> None:
 
 
 def render_table(tickets: List[Ticket]) -> None:
-    table = PrettyTable(["id", "subject", "status", "created_at"])
+    table = PrettyTable(["ID", "Subject", "Status", "Created At"])
 
     table.hrules = 1
     table.vrules = 1
