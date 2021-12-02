@@ -44,19 +44,26 @@ class Controller:
     def handle_tickets_request(self) -> None:
         selected_tickets_option = ""
         page_number = 1
+        page_count = self.request(count=True)
+
+        self.request(multiple_tickets=True, page_number=page_number, page_count=page_count)
 
         while selected_tickets_option != "4":
             self.render_tickets_submenu()
             selected_tickets_option = self.receive_input()
 
             if selected_tickets_option == "1":
-                # TODO: user input for tickets [prev page]
                 page_number -= 1
-                print(self.requestor.request())
+                if page_number <= 0:
+                    self.render_over_or_undershot_page()
+                    page_number = 1
+                self.request(multiple_tickets=True, page_number=page_number, page_count=page_count)
             elif selected_tickets_option == "2":
-                # TODO: user input for tickets [next page]
                 page_number += 1
-                print(self.requestor.request())
+                if page_number >= page_count:
+                    self.render_over_or_undershot_page()
+                    page_number = page_count
+                self.request(multiple_tickets=True, page_number=page_number, page_count=page_count)
             elif selected_tickets_option == "3":
                 break
             elif selected_tickets_option == "4":
@@ -78,14 +85,29 @@ class Controller:
         else:
             self.render_incorrect_input()
 
-    def request(self, ticket_id: str) -> None:
-        ticket = self.requestor.request(ticket_id)
-
-        if ticket:
-            if type(ticket) is str:
-                self.handle_request_error(ticket)
+    def request(
+        self,
+        ticket_id: str = "",
+        multiple_tickets: bool = False,
+        page_number: int = None,
+        page_count: int = None,
+        count: bool = False,
+    ) -> None:
+        if count:
+            return self.requestor.request(count=count)
+        if not multiple_tickets:
+            tickets = self.requestor.request(ticket_id)
+        else:
+            tickets = self.requestor.request(multiple_tickets=multiple_tickets, page=page_number)
+        if tickets:
+            if type(tickets) is str:
+                self.handle_request_error(tickets)
             else:
-                self.render_table(ticket)
+                if ticket_id == "":
+                    self.render_table(tickets, page=page_number, page_count=page_count)
+                else:
+                    self.render_table([tickets])
+
         else:
             self.render_incorrect_id()
 
@@ -111,8 +133,8 @@ class Controller:
     def render_ticket_prompt_input(self) -> None:
         self.view.render_ticket_prompt_input()
 
-    def render_table(self, tickets: List[Ticket]) -> None:
-        self.view.render_table(tickets)
+    def render_table(self, tickets: List[Ticket], page: int = None, page_count: int = None) -> None:
+        self.view.render_table(tickets=tickets, page=page, page_count=page_count)
 
     def render_ticket_submenu(self) -> None:
         self.view.render_ticket_submenu()
@@ -134,6 +156,9 @@ class Controller:
 
     def render_error_bad_request(self) -> None:
         self.view.render_error_bad_request()
+
+    def render_over_or_undershot_page(self) -> None:
+        self.view.render_over_or_undershot_page()
 
     def render_incorrect_id(self) -> None:
         self.view.render_incorrect_id()

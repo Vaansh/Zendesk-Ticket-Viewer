@@ -29,7 +29,7 @@ def render(string_to_render: str, align_to_center: bool = False) -> None:
     print(string_to_render.center(os.get_terminal_size().columns) if align_to_center else string_to_render)
 
 
-def render_table(tickets: List[Ticket]) -> None:
+def render_table(tickets: List[Ticket], page: int = None, page_count: int = None) -> None:
     table = PrettyTable(["ID", "Subject", "Status", "Created At"])
 
     table.hrules = 1
@@ -47,4 +47,4 @@ def render_table(tickets: List[Ticket]) -> None:
         )
 
     render(table)
-    render("\n")
+    render(("Page number: " + str(page) + "/" + str(page_count) + "\n") if (page and page_count) else ("\n"))

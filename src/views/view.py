@@ -47,8 +47,8 @@ class View:
         for tickets_option in self.tickets_options:
             print(str(tickets_option), self.tickets_options[tickets_option], sep=": ")
 
-    def render_table(self, tickets: List[Ticket]) -> None:
-        return helpers.render_table(tickets)
+    def render_table(self, tickets: List[Ticket], page: int = None, page_count: int = None) -> None:
+        return helpers.render_table(tickets=tickets, page=page, page_count=page_count)
 
     def render_error_api_unavailable(self) -> None:
         helpers.render("API is unavailable.\n")
@@ -61,6 +61,9 @@ class View:
 
     def render_exit_screen(self) -> None:
         helpers.render("Thank you for using this application.\n")
+
+    def render_over_or_undershot_page(self) -> None:
+        helpers.render("This page does not exist. Resetting page pointer and rendering last page.\n")
 
     def render_incorrect_input(self) -> None:
         helpers.render("Your input was not recognized. Please ensure you enter the option presented correctly.\n")
