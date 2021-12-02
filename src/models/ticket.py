@@ -8,7 +8,6 @@ class Ticket:
         self.status = ticket["status"]
         self.created_at = ticket["created_at"]
         self.description = ticket["description"]
-
         self.json_dictionary = {
             "id": ticket["id"],
             "subject": ticket["subject"],
@@ -18,7 +17,6 @@ class Ticket:
 
     def __str__(self, detailed_dict: bool = False) -> str:
         to_str = ""
-
         detailed_json_dictionary = self.json_dictionary
 
         if detailed_dict:
@@ -30,10 +28,10 @@ class Ticket:
         return to_str
 
     def ticket_as_json(self, detailed: bool = False) -> str:
-
         if not detailed:
             return json.dumps(self.json_dictionary)
 
         detailed_json_dictionary = self.json_dictionary
         detailed_json_dictionary["description"] = self._description
+
         return json.dumps(detailed_json_dictionary)
