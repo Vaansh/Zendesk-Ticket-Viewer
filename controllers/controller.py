@@ -17,21 +17,23 @@ class Controller:
         )
 
     def start_application(self) -> None:
-        self.render_header()
+        self.view.render_header()
 
         selected_option = ""
         self.enter_credentials()
 
         while selected_option != "3":
-            self.render_menu()
+            self.view.render_menu()
             selected_option = self.receive_input()
 
             if selected_option == "1":
                 self.handle_tickets_request()
             elif selected_option == "2":
                 self.handle_ticket_request()
+            elif selected_option == "3":
+                break
             else:
-                self.render_incorrect_input()
+                self.view.render_incorrect_input()
 
         self.exit_application()
 
@@ -61,7 +63,7 @@ class Controller:
 
     def handle_ticket_request(self) -> None:
         selected_ticket_option = ""
-        self.render_ticket_prompt_input()
+        self.view.render_ticket_prompt_input()
         selected_ticket_option = self.receive_input()
         self.request(selected_ticket_option)
         self.handle_subticket_request()
@@ -74,19 +76,19 @@ class Controller:
         self.request(multiple_tickets=True, page_number=page_number, page_count=page_count)
 
         while selected_tickets_option != "4":
-            self.render_tickets_submenu()
+            self.view.render_tickets_submenu()
             selected_tickets_option = self.receive_input()
 
             if selected_tickets_option == "1":
                 page_number -= 1
                 if page_number <= 0:
-                    self.render_over_or_undershot_page()
+                    self.view.render_over_or_undershot_page()
                     page_number = 1
                 self.request(multiple_tickets=True, page_number=page_number, page_count=page_count)
             elif selected_tickets_option == "2":
                 page_number += 1
                 if page_number > page_count:
-                    self.render_over_or_undershot_page()
+                    self.view.render_over_or_undershot_page()
                     page_number = page_count
                 self.request(multiple_tickets=True, page_number=page_number, page_count=page_count)
             elif selected_tickets_option == "3":
@@ -94,11 +96,11 @@ class Controller:
             elif selected_tickets_option == "4":
                 self.exit_application()
             else:
-                self.render_incorrect_input()
+                self.view.render_incorrect_input()
 
     def handle_subticket_request(self) -> None:
         subticket_option = ""
-        self.render_ticket_submenu()
+        self.view.render_ticket_submenu()
 
         subticket_option = self.receive_input()
         if subticket_option == "1":
@@ -108,7 +110,7 @@ class Controller:
         elif subticket_option == "3":
             self.exit_application()
         else:
-            self.render_incorrect_input()
+            self.view.render_incorrect_input()
 
     def request(
         self,
@@ -132,15 +134,14 @@ class Controller:
                     self.render_table(tickets, page=page_number, page_count=page_count)
                 else:
                     self.render_table([tickets])
-
         else:
-            self.render_incorrect_id()
+            self.view.render_incorrect_id()
 
     def handle_request_error(self, ticket: str) -> None:
         if ticket == "err_api_unavailable":
-            self.render_error_api_unavailable()
+            self.view.render_error_api_unavailable()
         elif ticket == "err_bad_request":
-            self.render_error_bad_request()
+            self.view.self.view.render_error_bad_request()
         else:
             self.render_unkown_error()
 
@@ -149,44 +150,11 @@ class Controller:
         helpers.render("")
         return user_input
 
-    def render_header(self) -> None:
-        self.view.render_header()
-
-    def render_menu(self) -> None:
-        self.view.render_menu()
-
-    def render_ticket_prompt_input(self) -> None:
-        self.view.render_ticket_prompt_input()
-
     def render_table(self, tickets: List[Ticket], page: int = None, page_count: int = None) -> None:
         self.view.render_table(tickets=tickets, page=page, page_count=page_count)
 
-    def render_ticket_submenu(self) -> None:
-        self.view.render_ticket_submenu()
-
-    def render_tickets_submenu(self) -> None:
-        self.view.render_tickets_submenu()
-
-    def render_incorrect_input(self) -> None:
-        self.view.render_incorrect_input()
-
     def render_exit_screen(self) -> None:
         self.view.render_exit_screen()
-
-    def render_unkown_error(self) -> None:
-        self.view.render_unkown_error()
-
-    def render_error_api_unavailable(self) -> None:
-        self.view.render_error_api_unavailable()
-
-    def render_error_bad_request(self) -> None:
-        self.view.render_error_bad_request()
-
-    def render_over_or_undershot_page(self) -> None:
-        self.view.render_over_or_undershot_page()
-
-    def render_incorrect_id(self) -> None:
-        self.view.render_incorrect_id()
 
     def exit_application(self) -> None:
         self.render_exit_screen()
