@@ -79,14 +79,26 @@ pip install -r requirements.txt
 
 2. Run `python test/test.py` to run the tests.
 
-Prompt when application begins running:
+Prompt when application begins running (blurred credentials):
+
+<img src="https://github.com/Vaansh/Zendesk-Ticket-Viewer/blob/main/utils/data/images/1.png">
+
 **Note**: It is important that you use the correct credentials, since they will be stored in `credentials.json` after they're read.
 
 #### View all tickets view:
 
+<img src="https://github.com/Vaansh/Zendesk-Ticket-Viewer/blob/main/utils/data/images/2.png">
+
+<img src="https://github.com/Vaansh/Zendesk-Ticket-Viewer/blob/main/utils/data/images/3.png">
+
 #### View one tickets view:
 
+<img src="https://github.com/Vaansh/Zendesk-Ticket-Viewer/blob/main/utils/data/images/4.png">
+
 #### Tests:
+
+<img src="https://github.com/Vaansh/Zendesk-Ticket-Viewer/blob/main/utils/data/images/5.png">
+
 <!-- LICENSE -->
 
 ## License
