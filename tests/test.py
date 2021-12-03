@@ -4,45 +4,46 @@ from os.path import abspath, dirname
 
 import requests
 
-sys.path.insert(0, dirname(dirname(abspath(__file__))) + '/src')
-
-from models.ticket import Ticket
-from models.ticket_viewer import TicketViewer
+from mock.requestor import Requestor
+from mock.ticket import Ticket
 
 
 class TestTicket(unittest.TestCase):
-    ticket_json = {
-        "created_at" : "08/01/2021",
-        "id": 1, 
-        "assignee_id": "123456789",
-        "submitter_id": "987654321",
-        "subject": "Test Ticket",
-        "description": "Test Ticket", 
-        "requester_id": "111111111",
+    ticket = Ticket(
+        {
+        "id": 100, 
+        "created_at" : "02/02/2022",
+        "subject": "example",
+        "description": "example", 
         "status": "closed"
-    } 
+        }
+    )
 
-    ticket = Ticket(ticket_json)
+    def test_ticket_value(self):
+        ticket_string = repr(self.ticket.render_header(False))        
+        self.assertEqual(ticket_string, repr("id: 100\nsubject: example\nstatus: closed\ncreated_at: 02/02/2022\n"))
 
-    def test_ticket_repr(self):
-        ticket_string = str(self.ticket)
-        self.assertEqual(ticket_string, "Ticket Id: 1 || Created At:08/01/2021 || Assigned To: 123456789 || Status: closed")
-    
-    def test_ticket_details(self):
-        ticket_details = self.ticket.get_ticket_detail()
-        self.assertEqual(ticket_details, "\n Ticket ID: 1 \n Created At: 08/01/2021 \n Assigned To: 123456789 \n Status: closed \n Subject: Test Ticket \n Description: Test Ticket \n")
+class TestTicketDescription(unittest.TestCase):
+    ticket = Ticket(
+        {
+        "id": 10, 
+        "created_at" : "01/01/2021",
+        "subject": "example",
+        "description": "example", 
+        "status": "closed"
+        }
+    )
 
-class TestRetriever(unittest.TestCase):
-    retriever = TicketRetriever()
-    wrong_id = "ab2"
+    def test_ticket_description(self):
+        ticket_string_detailed = repr(self.ticket.render_header(True))
+        self.assertEqual(ticket_string_detailed, repr("id: 10\nsubject: example\nstatus: closed\ncreated_at: 01/01/2021\ndescription: example\n"))
 
-    def test_no_page(self):
-        no_page = self.retriever.get_page_count()
-        self.assertEqual(no_page, 4) 
-    
-    def test_wrong_id(self):
-        with self.assertRaises(requests.exceptions.HTTPError):
-            self.retriever.retrieve_individual_ticket(self.wrong_id)
+class TestRequestor(unittest.TestCase):
+    requestor = Requestor("example","example","example")
+
+    def test_invalid_credentials(self):
+        response = self.requestor.request()
+        self.assertEqual(response, "err_bad_request") 
 
 if __name__ == "__main__":
-    unittest.main() 
+    unittest.main()

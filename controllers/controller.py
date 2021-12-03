@@ -1,7 +1,7 @@
 import sys
 from typing import Any, List
 
-import lib.helpers as helpers
+import utils.helpers as helpers
 from models.requestor import Requestor
 from models.ticket import Ticket
 from views.view import View
