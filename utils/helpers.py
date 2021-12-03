@@ -10,11 +10,10 @@ def get_credentials(path: str) -> dict:
     file = open(path)
     data = json.load(file)
     credentials = {}
-    credentials["username"], credentials["password"], credentials["subdomain"], credentials["api_token"] = (
+    credentials["username"], credentials["password"], credentials["subdomain"], = (
         data["username"],
         data["password"],
         data["subdomain"],
-        data["api_token"],
     )
     file.close()
     return credentials

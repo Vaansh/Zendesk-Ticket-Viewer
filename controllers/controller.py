@@ -1,3 +1,4 @@
+import json
 import sys
 from typing import Any, List
 
@@ -10,7 +11,7 @@ from views.view import View
 class Controller:
     def __init__(self):
         self.view = View()
-        self.credentials = helpers.get_credentials("credentials/credentials.json")
+        self.credentials = helpers.get_credentials("credentials.json")
         self.requestor = Requestor(
             self.credentials["username"], self.credentials["password"], self.credentials["subdomain"]
         )
@@ -19,6 +20,7 @@ class Controller:
         self.render_header()
 
         selected_option = ""
+        self.enter_credentials()
 
         while selected_option != "3":
             self.render_menu()
@@ -32,6 +34,30 @@ class Controller:
                 self.render_incorrect_input()
 
         self.exit_application()
+
+    def enter_credentials(self) -> None:
+        helpers.render("Enter your username/email (format: example@example.com):")
+        username = self.receive_input()
+
+        helpers.render("Enter your password:")
+        password = self.receive_input()
+
+        helpers.render("Enter your subdomain:")
+        subdomain = self.receive_input()
+
+        credentials = {
+            "username":username,
+            "password":password,
+            "subdomain":subdomain,
+        }
+        
+        with open('credentials.json', 'w') as f:
+            json.dump(credentials, f)
+
+        self.credentials = helpers.get_credentials("credentials.json")
+        self.requestor = Requestor(
+            self.credentials["username"], self.credentials["password"], self.credentials["subdomain"]
+        )
 
     def handle_ticket_request(self) -> None:
         selected_ticket_option = ""
